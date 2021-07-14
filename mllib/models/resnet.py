@@ -9,6 +9,7 @@ from typing import List
 
 class BasicBlock(nn.Module):
 
+    expansion = 1
     def __init__(self, in_ch: int, out_ch: int, norm_type: str, stride: int = 1, expansion: int = 1):
         super().__init__()
         assert norm_type in ["LN", "BN"], f"norm_type not supported: {norm_type}"
