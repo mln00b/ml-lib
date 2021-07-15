@@ -37,7 +37,7 @@ class TinyImageNetDataset(Dataset):
             try:
                 img = self.transform(img)
             except:
-                img = np.array(img)
+                img = np.array(img).astype("float32")
                 img /= 255.0
                 img = self.transform(image=img)["image"]
 
