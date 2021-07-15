@@ -38,7 +38,8 @@ def get_train_test_images_and_labels(base_dir: str = ".", split: int = 0.7):
     data_dir = os.path.join(base_dir, "tiny-imagenet-200")
     if not os.path.exists(data_dir):
         os.system(f"wget {DATASET_URL}")
-        os.makedirs(base_dir)
+        if not os.path.exists(base_dir):
+            os.makedirs(base_dir)
         os.system(f"unzip -qq {ZIP_NAME} -d {base_dir}")
 
     train_images = []
