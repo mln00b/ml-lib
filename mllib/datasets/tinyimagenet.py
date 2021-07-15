@@ -37,7 +37,9 @@ class TinyImageNetDataset(Dataset):
             try:
                 img = self.transform(img)
             except:
-                img = self.transform(image=np.array(img))["image"]
+                img = np.array(img)
+                img /= 255.0
+                img = self.transform(image=img)["image"]
 
         return img, lbl
 
