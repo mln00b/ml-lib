@@ -33,7 +33,10 @@ class TinyImageNetDataset(Dataset):
         lbl = self.label_map[self.image_labels[idx]]
 
         if self.transform:
-            img = self.transform(img)
+            try:
+                img = self.transform(img)
+            except:
+                img = self.transform(image=img)["image"]
 
         return img, lbl
 
