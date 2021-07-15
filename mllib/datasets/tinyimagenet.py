@@ -28,7 +28,7 @@ class TinyImageNetDataset(Dataset):
         return len(self.image_paths)
 
     def __getitem__(self, idx):
-        img = Image.open(self.image_paths[idx])
+        img = Image.open(self.image_paths[idx]).convert("RGB")
         lbl = self.label_map[self.image_labels[idx]]
 
         if self.transform:
