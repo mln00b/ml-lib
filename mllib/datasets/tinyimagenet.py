@@ -78,7 +78,11 @@ def get_train_test_dataset(train_images: List[str], train_labels: List[str], tes
     return train_ds, test_ds
 
 
-def get_train_test_dataloaders(train_ds: Dataset, test_ds: Dataset, train_bs: int, test_bs: int, num_workers: int = 4, use_cuda: bool = False):
+def get_train_test_dataloaders(data_base_dir: str = ".", train_ds: Dataset = None, test_ds: Dataset = None, train_bs: int = 64, test_bs: int = 64, train_transforms: transforms.Compose = None, test_transforms: transforms.Compose = None, num_workers: int = 4, use_cuda: bool = False):
+    if train_ds is None or test_ds is None:
+        train_images, train_labels, test_images, test_labels = get_train_test_images_and_labels(data_base_dir)
+        train_ds, test_ds = get_train_test_dataset(train_images, train_labels, test_images, test_labels, train_transforms, test_transforms)
+    
     train_dataloader_args = dict(shuffle=True, batch_size=train_bs, num_workers=num_workers,
                                  pin_memory=True) if use_cuda else dict(shuffle=True, batch_size=train_bs)
     test_dataloader_args = dict(shuffle=True, batch_size=test_bs, num_workers=num_workers,
