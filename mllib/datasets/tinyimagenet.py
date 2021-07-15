@@ -1,6 +1,7 @@
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
+import numpy as np
 
 import os
 
@@ -36,7 +37,7 @@ class TinyImageNetDataset(Dataset):
             try:
                 img = self.transform(img)
             except:
-                img = self.transform(image=img)["image"]
+                img = self.transform(image=np.array(img))["image"]
 
         return img, lbl
 
