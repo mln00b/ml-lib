@@ -70,9 +70,9 @@ class ResNet(nn.Module):
         return out
 
 
-def ResNet18(norm_type="BN"):
-    return ResNet(BasicBlock, [2, 2, 2, 2], norm_type)
+def ResNet18(num_classes: int = 10, norm_type: str ="BN"):
+    return ResNet(BasicBlock, [2, 2, 2, 2], norm_type, num_classes)
 
 
-def ResNet34(norm_type="BN"):
-    return ResNet(BasicBlock, [3, 4, 6, 3], norm_type)
+def ResNet34(num_classes: int = 10, norm_type: str ="BN"):
+    return ResNet(BasicBlock, [3, 4, 6, 3], norm_type, num_classes)
