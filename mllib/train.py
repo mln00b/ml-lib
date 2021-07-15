@@ -6,7 +6,7 @@ from .test import test_classification
 from typing import Callable
 
 
-def train_one_epoch_classification(model: torch.nn.Module, device: torch.device, train_loader: DataLoader, optimizer: torch.optim, loss_fn: Callable):
+def train_one_epoch_classification(model: torch.nn.Module, device: torch.device, train_loader: DataLoader, optimizer: torch.optim, loss_fn: Callable, scheduler: torch.optim.lr_scheduler = None):
     train_losses = []
     train_acc = []
 
@@ -25,6 +25,8 @@ def train_one_epoch_classification(model: torch.nn.Module, device: torch.device,
 
         loss.backward()
         optimizer.step()
+        if scheduler:
+            scheduler.step()
 
         pred = y_pred.argmax(dim=1, keepdim=True)
         correct += pred.eq(target.view_as(pred)).sum().item()
@@ -37,7 +39,7 @@ def train_one_epoch_classification(model: torch.nn.Module, device: torch.device,
     return train_losses, train_acc
 
 
-def train_and_test_classification(model: torch.nn.Module, device: torch.device, train_loader: DataLoader, test_loader: DataLoader, optimizer: torch.optim, loss_fn: Callable, epochs: int):
+def train_and_test_classification(model: torch.nn.Module, device: torch.device, train_loader: DataLoader, test_loader: DataLoader, optimizer: torch.optim, loss_fn: Callable, epochs: int, scheduler: torch.optim.lr_scheduler = None):
     train_losses = []
     test_losses = []
     train_acc = []
@@ -45,7 +47,7 @@ def train_and_test_classification(model: torch.nn.Module, device: torch.device, 
     for epoch in range(epochs):
         print("EPOCH:", epoch)
         train_epoch_losses, train_epoch_acc = train_one_epoch_classification(
-            model, device, train_loader, optimizer, loss_fn)
+            model, device, train_loader, optimizer, loss_fn, scheduler)
         test_loss, test_acc = test_classification(
             model, device, test_loader, loss_fn)
         train_losses.extend(train_epoch_losses)
