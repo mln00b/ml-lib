@@ -78,13 +78,13 @@ def get_train_test_dataset(train_images: List[str], train_labels: List[str], tes
     return train_ds, test_ds
 
 
-def get_train_test_dataloaders(train_ds: Dataset, test_ds: Dataset, train_bs: int, val_bs: int, num_workers: int = 4, use_cuda: bool = False):
+def get_train_test_dataloaders(train_ds: Dataset, test_ds: Dataset, train_bs: int, test_bs: int, num_workers: int = 4, use_cuda: bool = False):
     train_dataloader_args = dict(shuffle=True, batch_size=train_bs, num_workers=num_workers,
                                  pin_memory=True) if use_cuda else dict(shuffle=True, batch_size=train_bs)
-    val_dataloader_args = dict(shuffle=True, batch_size=val_bs, num_workers=num_workers,
-                               pin_memory=True) if use_cuda else dict(shuffle=True, batch_size=val_bs)
+    test_dataloader_args = dict(shuffle=True, batch_size=test_bs, num_workers=num_workers,
+                               pin_memory=True) if use_cuda else dict(shuffle=True, batch_size=test_bs)
 
     train_loader = DataLoader(train_ds, **train_dataloader_args)
-    test_loader = DataLoader(test_ds, **val_dataloader_args)
+    test_loader = DataLoader(test_ds, **test_dataloader_args)
 
     return train_loader, test_loader
