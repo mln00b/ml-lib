@@ -8,6 +8,9 @@ from typing import List
 DATASET_URL = "http://cs231n.stanford.edu/tiny-imagenet-200.zip"
 ZIP_NAME = "tiny-imagenet-200.zip"
 
+DATASET_MEAN = [0.48043839, 0.44820218, 0.39760034]  # train+test ds
+DATASET_STD = [0.27698959, 0.26908774, 0.28216029]  # train+test ds
+
 
 class TinyImageNetDataset(Dataset):
     def __init__(self, image_paths: List[str], image_labels: List[str], transform=None):
