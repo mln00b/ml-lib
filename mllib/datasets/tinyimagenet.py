@@ -34,7 +34,7 @@ class TinyImageNetDataset(Dataset):
         if self.transform:
             img = self.transform(img)
 
-        return {"img": img, "lbl": lbl}
+        return img, lbl
 
 
 def get_train_test_images_and_labels(base_dir: str = ".", split: int = 0.7):
