@@ -20,7 +20,7 @@ class TinyImageNetDataset(Dataset):
         self.image_labels = image_labels
         self.transform = transform
 
-        labels_ls = image_labels
+        labels_ls = list(set(image_labels))
         labels_ls.sort()
         self.label_map = {label: i for i, label in enumerate(labels_ls)}
 
