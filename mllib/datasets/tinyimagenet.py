@@ -34,12 +34,12 @@ class TinyImageNetDataset(Dataset):
         return {"img": img, "lbl": lbl}
 
 
-def get_train_test_images_and_labels(data_dir: str = None, split: int = 0.7):
-    data_dir = data_dir or "tiny-imagenet-200"
+def get_train_test_images_and_labels(base_dir: str = ".", split: int = 0.7):
+    data_dir = os.path.join(base_dir, "tiny-imagenet-200")
     if not os.path.exists(data_dir):
         os.system(f"wget {DATASET_URL}")
-        os.makedirs(data_dir)
-        os.system(f"unzip -qq {ZIP_NAME} -d {data_dir}")
+        os.makedirs(base_dir)
+        os.system(f"unzip -qq {ZIP_NAME} -d {base_dir}")
 
     train_images = []
     train_labels = []
