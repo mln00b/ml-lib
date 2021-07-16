@@ -24,10 +24,8 @@ class BasicBlock(nn.Module):
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
         out = self.bn2(self.conv2(out))
-        out = F.dropout(out, p=self.dropout)
         out += self.shortcut(x)
         out = F.relu(out)
-        out = F.dropout(out, p=self.dropout)
         return out
 
 
@@ -48,7 +46,7 @@ class ResNet(nn.Module):
         strides = [stride] + [1]*(num_blocks-1)
         layers = []
         for stride in strides:
-            layers.append(block(self.in_planes, planes, stride, dropout=self.dropout))
+            layers.append(block(self.in_planes, planes, stride))
             self.in_planes = planes * block.expansion
         return nn.Sequential(*layers)
 
