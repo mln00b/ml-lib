@@ -10,7 +10,7 @@ from typing import List, Dict
 def get_transforms(options: List[Dict]):
     tfms = []
     for option in options:
-        ty = option["type"]
+        ty = option["ty"]
         conf = option["config"]
         if ty == "Pad":
             tfms.append(A.PadIfNeeded(conf))
