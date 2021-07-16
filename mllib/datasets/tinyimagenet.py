@@ -1,9 +1,6 @@
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
-import numpy as np
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
 
 import os
 
@@ -69,27 +66,52 @@ class TinyImageNetDataset(Dataset):
         return img, lbl
 
 
-def get_train_test_transforms():
-    def train_transform():
-        # Train Phase transformations
-        train_transforms = A.Compose([A.PadIfNeeded(min_height=70, min_width=70, always_apply=True),
-                                      A.RandomCrop(height=64, width=64, p=1),
-                                      A.HorizontalFlip(p=0.5),
-                                      A.CoarseDropout(max_holes=1, min_holes=1, max_height=32, max_width=32, p=0.8, fill_value=tuple([x * 255.0 for x in DATASET_MEAN]),
-                                                      min_height=32, min_width=32),
-                                      A.Normalize(
-                                          mean=DATASET_MEAN, std=DATASET_STD, always_apply=True),
-                                      ToTensorV2()
-                                      ])
-        return lambda img: train_transforms(image=np.array(img))["image"]
+train_transform_options = [
+    {
+        "ty": "Pad",
+        "config": {
+            "min_height": 70, "min_width": 70, "always_apply": True
+        }
+    },
+    {
+        "ty": "RandomCrop",
+        "config": {
+            "height": 64, "width": 64, "p": 1
+        }
+    },
+    {
+        "ty": "HorizontalFlip",
+        "config": {
+            "p": 0.5
+        }
+    },
+    {
+        "ty": "CoarseDropout",
+        "config": {
+            "max_holes": 1, "min_holes": 1, "max_height": 32, "max_width": 32, "p": 0.8, "fill_value": tuple([x * 255.0 for x in DATASET_MEAN]),
+            "min_height": 32, "min_width": 32
+        }
+    },
+    {
+        "ty": "Normalize",
+        "config": {
+            "mean": DATASET_MEAN, "std": DATASET_STD, "always_apply": True
+        }
+    },
+]
 
-    def test_transform():
-        # Test Phase transformations
-        test_transforms = A.Compose([A.Normalize(mean=DATASET_MEAN, std=DATASET_STD, always_apply=True),
-                                     ToTensorV2()])
-        return lambda img: test_transforms(image=np.array(img))["image"]
+test_transform_options = [
+    {
+        "ty": "Normalize",
+        "config": {
+            "mean": DATASET_MEAN, "std": DATASET_STD, "always_apply": True
+        }
+    },
+]
 
-    return train_transform(), test_transform()
+
+def get_train_test_transform_options():
+    return train_transform_options, test_transform_options
 
 
 def get_train_test_dataset(base_dir: str = ".", data_dir: str = "tiny-imagenet-200", train_transforms: transforms.Compose = None, test_transforms: transforms.Compose = None):

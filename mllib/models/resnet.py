@@ -7,7 +7,7 @@ import torch.nn.functional as F
 class BasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, in_planes, planes, stride=1, dropout=0.0):
+    def __init__(self, in_planes, planes, stride=1):
         super(BasicBlock, self).__init__()
         self.conv1 = nn.Conv2d(in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(planes)
@@ -20,11 +20,9 @@ class BasicBlock(nn.Module):
                 nn.Conv2d(in_planes, self.expansion*planes, kernel_size=1, stride=stride, bias=False),
                 nn.BatchNorm2d(self.expansion*planes)
             )
-        self.dropout = dropout
 
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
-        out = F.dropout(out, p=self.dropout)
         out = self.bn2(self.conv2(out))
         out = F.dropout(out, p=self.dropout)
         out += self.shortcut(x)
@@ -34,10 +32,9 @@ class BasicBlock(nn.Module):
 
 
 class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, num_classes=200, dropout=0.0):
+    def __init__(self, block, num_blocks, num_classes=10):
         super(ResNet, self).__init__()
         self.in_planes = 64
-        self.dropout = dropout
 
         self.conv1 = nn.Conv2d(3, 64, kernel_size=3, stride=1, padding=1, bias=False)
         self.bn1 = nn.BatchNorm2d(64)
@@ -57,7 +54,6 @@ class ResNet(nn.Module):
 
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
-        out = F.dropout(out, p=self.dropout)
         out = self.layer1(out)
         out = self.layer2(out)
         out = self.layer3(out)
@@ -68,9 +64,9 @@ class ResNet(nn.Module):
         return out
 
 
-def ResNet18(num_classes: int = 10, dropout=0.0):
-    return ResNet(BasicBlock, [2,2,2,2], num_classes=num_classes, dropout=dropout)
+def ResNet18(num_classes: int = 10):
+    return ResNet(BasicBlock, [2,2,2,2], num_classes=num_classes)
 
 
-def ResNet34(num_classes: int = 10, dropout=0.0):
-    return ResNet(BasicBlock, [3, 4, 6, 3], num_classes=num_classes, dropout=dropout)
+def ResNet34(num_classes: int = 10):
+    return ResNet(BasicBlock, [3, 4, 6, 3], num_classes=num_classes)
