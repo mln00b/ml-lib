@@ -70,7 +70,7 @@ train_transform_options = [
     {
         "ty": "Pad",
         "config": {
-            "min_height": 70, "min_width": 70, "always_apply": True
+            "min_height": 72, "min_width": 72, "always_apply": True
         }
     },
     {
@@ -88,7 +88,7 @@ train_transform_options = [
     {
         "ty": "CoarseDropout",
         "config": {
-            "max_holes": 1, "min_holes": 1, "max_height": 32, "max_width": 32, "p": 0.8, "fill_value": tuple([x * 255.0 for x in DATASET_MEAN]),
+            "max_holes": 1, "min_holes": 1, "max_height": 32, "max_width": 32, "p": 0.5, "fill_value": tuple([x * 255.0 for x in DATASET_MEAN]),
             "min_height": 32, "min_width": 32
         }
     },
