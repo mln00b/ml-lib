@@ -13,15 +13,15 @@ def get_transforms(options: List[Dict]):
         ty = option["ty"]
         conf = option["config"]
         if ty == "Pad":
-            tfms.append(A.PadIfNeeded(*conf))
+            tfms.append(A.PadIfNeeded(**conf))
         elif ty == "RandomCrop":
-            tfms.append(A.RandomCrop(*conf))
+            tfms.append(A.RandomCrop(**conf))
         elif ty == "HorizontalFlip":
-            tfms.append(A.HorizontalFlip(*conf))
+            tfms.append(A.HorizontalFlip(**conf))
         elif ty == "CoarseDropout":
-            tfms.append(A.CoarseDropout(*conf))
+            tfms.append(A.CoarseDropout(**conf))
         elif ty == "Normalize":
-            tfms.append(A.Normalize(*conf))
+            tfms.append(A.Normalize(**conf))
 
     tfms.append(ToTensorV2())
     tfms = A.Compose(tfms)
